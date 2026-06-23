@@ -1,0 +1,43 @@
+name: Move hero video into assets
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/move-hero-video.yml
+
+permissions:
+  contents: write
+
+jobs:
+  move-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Move hero video into assets
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          if [ -f starry-signal-hero-loop-40s.mp4 ]; then
+            git mv starry-signal-hero-loop-40s.mp4 assets/starry-signal-hero-loop-40s.mp4
+          fi
+          rm -f assets/.gitkeep
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          text = path.read_text()
+          text = text.replace('src="starry-signal-hero-loop-40s.mp4"', 'src="assets/starry-signal-hero-loop-40s.mp4"')
+          path.write_text(text)
+          PY
+          git rm .github/workflows/move-hero-video.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets
+          if git diff --cached --quiet; then
+            echo "Nothing to move"
+          else
+            git commit -m "Move hero video into assets"
+            git push
+          fi
