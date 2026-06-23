@@ -118,7 +118,7 @@ nav a:hover {
   z-index: 2;
   height: min(28vh, 18rem);
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent, rgba(2, 4, 7, 0.72) 70%, var(--bg));
+  background: linear-gradient(to bottom, transparent, rgba(2, 4, 7, 0.9) 62%, #000 100%);
 }
 
 .hero-video-bg,
@@ -243,6 +243,10 @@ h3 {
 .archive,
 .featured {
   padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 5vw, 5rem);
+}
+
+.manifesto {
+  background: #000;
 }
 
 .section-grid,
